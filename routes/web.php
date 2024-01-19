@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UrlController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,14 +15,28 @@ use App\Http\Controllers\UrlController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-// Route::get('/', 'UrlController@index');
-// Route::post('/shorten', 'UrlController@shorten');
-// Route::get('/{code}', 'UrlController@redirect');
+Route::get('/', function () {
+    return view('auth.login');
+});
+Route::get('/register', function () {
+    return view('auth.register');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::resource('urls', UrlController::class)->middleware(['auth', 'verified']);
+
+//==================== Short URL ===============================//
+Route::get('{shortener_url}', [UrlController::class, 'shortenLink'])->name('shortener-url');
+//==================== Short URL ===============================//
 
 
-Route::get('/', [UrlController::class, 'index']);
-Route::post('/shorten', [UrlController::class, 'shorten'])->name('shorten');
-Route::get('/{short_url}', [UrlController::class, 'redirect'])->name('redirect');
+require __DIR__.'/auth.php';

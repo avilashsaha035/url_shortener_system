@@ -3,40 +3,64 @@
 namespace App\Http\Controllers;
 
 use App\Models\Url;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class UrlController extends Controller
 {
-    public function index() {
-        return view ('index');
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $urls = Url::with('user')->latest()->get();
+        return view('urls.index', compact('urls'));
     }
 
-    public function shorten(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        // $request->validate([
-        //     'original_url' => 'required|url',
-        // ]);
-
-        $url = new Url();
-        $url->original_url = $request->input('url');
-        $url->short_url = Str::random(5);
-
-        // $short_url = url("/$url->short_url");
-
-        $url->save();
-        return view('shorten');
+        //
     }
 
-    public function redirect($short_url)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
-        $url = Url::where('short_url', $short_url)->first();
-        // dd($url);
+        //
+    }
 
-        if ($url) {
-            return redirect($url->original_url);
-        } else {
-            abort(404); // Shortened URL not found
-        }
+    /**
+     * Display the specified resource.
+     */
+    public function show(Url $url)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Url $url)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Url $url)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Url $url)
+    {
+        //
     }
 }
