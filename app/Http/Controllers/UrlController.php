@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Url;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UrlController extends Controller
 {
@@ -29,7 +31,17 @@ class UrlController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'original_url' => 'required|string|max:255',
+        ]);
+        $data = $request->all();
+        $data['user_id'] = Auth::user()->id;
+        $data['name'] = Str::ucfirst($request->name);
+        $data['original_url'] = $request->original_url;
+        $data['short_url'] = Str::random(7);
+        Url::create($data);
+        return redirect(route('urls.index'));
     }
 
     /**
@@ -45,7 +57,7 @@ class UrlController extends Controller
      */
     public function edit(Url $url)
     {
-        //
+        return view('urls.edit', ['url' => $url,]);
     }
 
     /**
@@ -53,7 +65,13 @@ class UrlController extends Controller
      */
     public function update(Request $request, Url $url)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'original_url' => 'required|string|max:255',
+        ]);
+        $validated['short_url'] = Str::random(7);
+        $url->update($validated);
+        return redirect(route('urls.index'));
     }
 
     /**
@@ -61,6 +79,14 @@ class UrlController extends Controller
      */
     public function destroy(Url $url)
     {
-        //
+        $url->delete();
+        return redirect(route('urls.index'));
+    }
+
+    //Redirect to original url from short url
+    public function shorten_url($short_url)
+    {
+        $find = Url::where('short_url', $short_url)->first();
+        return redirect($find->original_url);
     }
 }

@@ -32,11 +32,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//==================== Resource route for url ====================//
 Route::resource('urls', UrlController::class)->middleware(['auth', 'verified']);
+//==================== Resource route for url ====================//
 
-//==================== Short URL ===============================//
-Route::get('{shortener_url}', [UrlController::class, 'shortenLink'])->name('shortener-url');
-//==================== Short URL ===============================//
+//=========== Redirect to original url from short url ==============//
+Route::get('{short_url}', [UrlController::class, 'shorten_url'])->name('short_url');
+//=========== Redirect to original url from short url =============//
 
 
 require __DIR__.'/auth.php';
