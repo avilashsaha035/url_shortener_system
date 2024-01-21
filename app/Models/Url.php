@@ -9,11 +9,16 @@ class Url extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id', 'name', 'original_url', 'short_url'
+        'user_id', 'name', 'original_url', 'short_url', 'click_count'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function incrementAccessCount()
+    {
+        $this->increment('click_count');
     }
 }

@@ -87,6 +87,10 @@ class UrlController extends Controller
     public function shorten_url($short_url)
     {
         $find = Url::where('short_url', $short_url)->first();
-        return redirect($find->original_url);
+
+        if($find) {
+            $find->incrementAccessCount();
+            return redirect($find->original_url);
+        }
     }
 }

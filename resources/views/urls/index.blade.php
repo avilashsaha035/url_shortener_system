@@ -56,7 +56,10 @@
                                 {{-- @endif --}}
                             </div>
                             <p class="mt-4 text-lg text-gray-900">{{ __('Name: ') }} {{ $item->name }}</p>
-                            <p class="mt-4 text-lg text-gray-900">{{ __('Original Url: ') }}{{ $item->original_url }}</p>
+                            <p class="mt-4 text-lg text-gray-900">
+                                {{ __('Original Url: ') }}{{ $item->original_url }} &nbsp;
+                                <span style="color:#0866e2; font-weight:bold; font-style:italic;">You are click this link {{ $item->click_count }} times</span>
+                            </p>
                             <p class="mt-4 text-lg text-gray-900">{{ __('Shortener Url: ') }}
                                 <a href="{{ route('short_url', $item->short_url) }}" target="_blank">
                                     {{ route('short_url', $item->short_url) }}

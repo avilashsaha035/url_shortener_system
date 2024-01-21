@@ -1,4 +1,9 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<style>
+    .main-header{
+        background: linear-gradient(to bottom left, #10a79f, #fffcd5);
+    }
+</style>
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 main-header">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
