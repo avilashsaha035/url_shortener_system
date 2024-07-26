@@ -57,6 +57,7 @@ class UrlController extends Controller
      */
     public function edit(Url $url)
     {
+        $this->authorize('update', $url); //checks if the current user is authorized to access the url
         return view('urls.edit', ['url' => $url,]);
     }
 
@@ -79,6 +80,7 @@ class UrlController extends Controller
      */
     public function destroy(Url $url)
     {
+        $this->authorize('delete', $url);
         $url->delete();
         return redirect(route('urls.index'));
     }
