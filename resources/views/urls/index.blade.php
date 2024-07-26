@@ -1,16 +1,24 @@
 <x-app-layout>
     <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li class="text-red-600">{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('urls.store') }}">
             @csrf
             <input type="text" name="name" required maxlength="255" placeholder="{{ __('Name') }}"
-                class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                value="{{ old('name') }}"
-            />
+                class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" value="{{ old('name') }}"/>
             <x-input-error :messages="$errors->store->get('name')" class="mt-2" />
+
             <input type="text" name="original_url" required maxlength="255" placeholder="{{ __('Original Url') }}"
-                class="block w-full border-gray-300 mt-5 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                value="{{ old('original_url') }}"
-            />
+                class="block w-full border-gray-300 mt-5 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" value="{{ old('original_url') }}"/>
             <x-input-error :messages="$errors->store->get('original_url')" class="mt-2" />
             <x-primary-button class="mt-4">{{ __('Save') }}</x-primary-button>
         </form>

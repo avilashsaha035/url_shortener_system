@@ -31,16 +31,16 @@ class UrlController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'original_url' => 'required|string|max:255',
+            'original_url' => 'required|url|max:255',
         ]);
-        $data = $request->all();
-        $data['user_id'] = Auth::user()->id;
-        $data['name'] = Str::ucfirst($request->name);
-        $data['original_url'] = $request->original_url;
-        $data['short_url'] = Str::random(7);
-        Url::create($data);
+        $validated = $request->all();
+        $validated['user_id'] = Auth::user()->id;
+        $validated['name'] = Str::ucfirst($request->name); //Str::ucfirst -> converts the first character of a string to uppercase
+        $validated['original_url'] = $request->original_url;
+        $validated['short_url'] = Str::random(7);
+        Url::create($validated);
         return redirect(route('urls.index'));
     }
 
